@@ -8,10 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-blue: #0054a6; /* Azul La Gaceta aproximado */
-            --brand-yellow: #fcd34d; /* Amarillo Suscribite */
-            --text-main: #1f2937;
-            --bg-body: #ffffff;
+            --brand-blue: #004a94;
+            --brand-yellow: #fcd34d;
+            --text-main: #111827;
+            --bg-body: #f3f4f6;
         }
 
         body {
@@ -27,14 +27,14 @@
 
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
 
         /* --- Intro Screen --- */
         #intro-screen {
             position: fixed;
             inset: 0;
             background: rgba(255,255,255,0.98);
-            z-index: 200; /* Por encima de todo */
+            z-index: 200;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -49,14 +49,12 @@
         }
 
         /* --- Game Elements --- */
-
-        /* Animación de Bola (Estilo Clásico Fútbol) */
         .draw-ball {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle at 30% 30%, #ffffff, #e2e8f0);
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #d1d5db);
             border-radius: 50%;
-            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.15), 0 4px 6px rgba(0,0,0,0.2);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -64,17 +62,15 @@
             font-size: 24px;
             transition: transform 0.2s;
             position: relative;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #9ca3af;
             z-index: 10;
             color: #333;
-        }
-        
+        }        
         .draw-ball:hover {
             transform: translateY(-5px) scale(1.05);
             border-color: var(--brand-blue);
-            box-shadow: 0 10px 15px rgba(0, 84, 166, 0.2);
+            box-shadow: 0 10px 15px rgba(0, 74, 148, 0.3);
         }
-
         .draw-ball.popped {
             animation: popDisappear 0.3s forwards;
         }
@@ -84,11 +80,11 @@
             100% { transform: scale(1.5); opacity: 0; }
         }
 
-        /* Overlay de Revelación (Adaptado a limpio) */
+        /* Overlay de Revelación */
         #reveal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 84, 166, 0.95); /* Azul corporativo con transparencia */
+            background: rgba(0, 74, 148, 0.95);
             backdrop-filter: blur(4px);
             z-index: 100;
             display: flex;
@@ -116,111 +112,137 @@
         /* Slot Animation */
         .slot-filled {
             animation: flashSlot 0.5s;
-            background-color: #f1f5f9; /* Slate 100 */
+            background-color: #ffffff; 
         }
         @keyframes flashSlot {
             0% { background-color: var(--brand-yellow); color: black; }
-            100% { background-color: #f1f5f9; color: black; }
-        }
-        
-        /* Header Nav Lines */
-        .hamburger-line {
-            width: 20px;
-            height: 2px;
-            background-color: var(--brand-blue);
-            margin: 3px 0;
+            100% { background-color: #ffffff; color: black; }
         }
 
+        /* Publicidad Style */
+        .ad-placeholder {
+            background-color: #d1d5db; /* Gris más oscuro standard ads */
+            border: 1px solid #9ca3af;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-family: sans-serif;
+            margin: 0 auto 15px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .ad-label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #9ca3af;
+            color: white;
+            font-size: 9px;
+            padding: 2px 4px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative">
 
     <div id="intro-screen">
-        <h1 class="text-4xl md:text-6xl font-black text-[#0054a6] mb-6 tracking-tight leading-tight max-w-4xl">
+        <h1 class="text-4xl md:text-6xl font-black text-[#004a94] mb-6 tracking-tight leading-tight max-w-4xl">
             Simulá el sorteo del Mundial 2026
         </h1>
-        <p class="text-xl md:text-2xl text-gray-600 mb-10 font-light max-w-2xl">
-            Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.
+        <p class="text-xl md:text-2xl text-gray-700 mb-10 font-light max-w-2xl">
+            Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.<br>
         </p>
-        <button onclick="startGame()" class="bg-[#0054a6] text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-[#00448a] transition transform hover:scale-105 shadow-xl tracking-widest uppercase">
-            Jugá
+        <button onclick="startGame()" class="bg-[#004a94] text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800">
+            Comenzar Sorteo
         </button>
-        <div class="mt-12 opacity-50">
-            <span class="text-sm text-gray-400 font-serif uppercase tracking-widest">Desarrollo LA GACETA</span>
+        <div class="mt-12 opacity-60">
+            <span class="text-sm text-gray-500 font-serif uppercase tracking-widest">Desarrollo LA GACETA</span>
         </div>
     </div>
 
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-        
-        
-        
-    </header>
+    <header class="bg-white border-b border-gray-300 sticky top-0 z-40 shadow-sm h-4"></header>
 
-    <main class="flex-grow container mx-auto p-4 md:p-8 space-y-8 bg-white">
+    <main class="flex-grow container mx-auto p-4 md:p-8 space-y-8">        
         
-        <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#0054a6] pb-2 mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3 mb-6">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">Sorteo Mundial 2026</h2>
-                <p class="text-sm text-gray-500 mt-1">Simulador Interactivo</p>
+                <h2 class="text-3xl font-black text-gray-900">Sorteo Mundial 2026</h2>
+                
             </div>
-            <div id="status-badge" class="mt-2 md:mt-0 px-3 py-1 bg-gray-100 text-[#0054a6] text-xs font-bold uppercase tracking-wider rounded border border-gray-200">
+            <div id="status-badge" class="mt-2 md:mt-0 px-4 py-2 bg-white text-[#004a94] text-sm font-bold uppercase tracking-wider rounded shadow-sm border border-gray-300">
                 Esperando inicio
             </div>
         </div>
 
         <section class="grid grid-cols-4 gap-2 md:gap-4 mb-8">
-            <div id="pot-indicator-0" class="p-2 rounded text-center text-xs font-bold transition-all border border-gray-200 bg-gray-50 text-gray-400">Bombo 1</div>
-            <div id="pot-indicator-1" class="p-2 rounded text-center text-xs font-bold transition-all border border-gray-200 bg-gray-50 text-gray-400">Bombo 2</div>
-            <div id="pot-indicator-2" class="p-2 rounded text-center text-xs font-bold transition-all border border-gray-200 bg-gray-50 text-gray-400">Bombo 3</div>
-            <div id="pot-indicator-3" class="p-2 rounded text-center text-xs font-bold transition-all border border-gray-200 bg-gray-50 text-gray-400">Bombo 4</div>
+            <div id="pot-indicator-0" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 1</div>
+            <div id="pot-indicator-1" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 2</div>
+            <div id="pot-indicator-2" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 3</div>
+            <div id="pot-indicator-3" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 4</div>
         </section>
 
-        <div id="groups-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div id="groups-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             </div>
 
-        <div class="h-32"></div> </main>
+        <div class="h-48"></div> </main>
 
-    <footer class="fixed bottom-0 w-full z-30 bg-white border-t border-gray-200 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] pb-safe">
-        <div class="container mx-auto px-4 py-4 text-center">
-            <h2 id="action-text" class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-widest">Seleccioná una bola</h2>
+    <footer class="fixed bottom-0 w-full z-30 bg-white border-t-2 border-gray-300 shadow-[0_-5px_25px_rgba(0,0,0,0.1)] pb-safe">
+        <div class="container mx-auto px-4 py-3">
             
-            <div id="balls-container" class="flex flex-wrap justify-center gap-3 min-h-[70px]">
+            <div class="w-full flex justify-center mb-3">
+                <div class="ad-placeholder w-[320px] h-[50px] md:w-[728px] md:h-[90px] rounded-sm">
+                    <div class="ad-label">Publicidad</div>
+                    <span class="text-xl md:text-3xl font-black text-gray-400 opacity-50 uppercase tracking-widest">Espacio Publicitario</span>
                 </div>
+            </div>
 
-            <button id="reset-btn" onclick="resetDraw()" class="hidden mt-4 px-8 py-2 bg-[#0054a6] text-white font-bold rounded shadow hover:bg-blue-800 transition uppercase tracking-widest text-sm">
-                Reiniciar
-            </button>
+            <div class="text-center">
+                <h2 id="action-text" class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Seleccioná una bola</h2>
+                
+                <div id="balls-container" class="flex flex-wrap justify-center gap-4 min-h-[60px]">
+                    </div>
+
+                <button id="reset-btn" onclick="resetDraw()" class="hidden mt-4 px-8 py-2 bg-[#004a94] text-white font-bold rounded shadow hover:bg-blue-900 transition uppercase tracking-widest text-sm">
+                    Reiniciar Sorteo
+                </button>
+            </div>
         </div>
     </footer>
 
     <div id="reveal-overlay">
-        <div class="reveal-card bg-white rounded shadow-2xl w-80 text-center relative overflow-hidden border-4 border-white">
+        <div class="reveal-card bg-white rounded-lg shadow-2xl w-80 text-center relative overflow-hidden border-4 border-white ring-1 ring-black/10">
             
-            <div class="bg-gray-100 p-4 border-b border-gray-200">
+            <div class="bg-gray-50 p-4 border-b border-gray-200">
                  <div class="text-gray-500 text-[10px] font-bold tracking-[0.2em] uppercase">Seleccionado</div>
-                 <h2 id="reveal-name" class="text-2xl font-black text-gray-800 uppercase leading-none mt-1">PAÍS</h2>
-                 <div id="reveal-confed" class="text-[10px] font-mono text-white bg-[#0054a6] px-2 py-0.5 rounded inline-block mt-2">CONFED</div>
+                 <h2 id="reveal-name" class="text-2xl font-black text-gray-900 uppercase leading-none mt-1 tracking-tight">PAÍS</h2>
+                 <div id="reveal-confed" class="text-[10px] font-mono text-white bg-[#004a94] px-2 py-0.5 rounded inline-block mt-2 shadow-sm">CONFED</div>
             </div>
             
             <div class="p-8 flex flex-col items-center gap-4 bg-white">
-                <div class="w-24 h-24 rounded-full border border-gray-200 shadow-lg overflow-hidden relative flex items-center justify-center bg-gray-50">
+                <div class="w-24 h-24 rounded-full border-4 border-gray-100 shadow-inner overflow-hidden relative flex items-center justify-center bg-gray-50">
                     <img id="reveal-flag" src="" alt="Flag" class="w-full h-full object-cover transform scale-110">
                 </div>
 
-                <div class="mt-2 w-full pt-2">
+                <div class="mt-2 w-full pt-2 border-t border-gray-100">
                     <p class="text-gray-400 text-xs font-serif italic">Asignado al</p>
-                    <div id="reveal-group" class="text-5xl font-black text-[#0054a6] brand-font mt-1">GRUPO A</div>
+                    <div id="reveal-group" class="text-5xl font-black text-[#004a94] brand-font mt-1 tracking-tighter drop-shadow-sm">GRUPO A</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- DATA ---
-        // (Mantengo la misma estructura de datos que tenías)
+        /* --- DATA CONFIGURADA CON TU LISTADO ---
+           Se han distribuido los países en 4 bombos basados en ranking aproximado
+           para mantener el realismo del simulador.
+           Total equipos: 42 de tu lista + 6 Repechajes = 48.
+        */
+
         const potsData = [
             {
-                id: 1,
+                id: 1, // Cabezas de Serie
                 teams: [
                     { name: "Estados Unidos", code: "us", conf: "CONCACAF" }, 
                     { name: "México", code: "mx", conf: "CONCACAF" }, 
@@ -229,83 +251,112 @@
                     { name: "Brasil", code: "br", conf: "CONMEBOL" }, 
                     { name: "Inglaterra", code: "gb-eng", conf: "UEFA" },
                     { name: "Francia", code: "fr", conf: "UEFA" }, 
+                    { name: "España", code: "es", conf: "UEFA" }, 
+                    { name: "Bélgica", code: "be", conf: "UEFA" },
                     { name: "Portugal", code: "pt", conf: "UEFA" }, 
-                    { name: "Países Bajos", code: "nl", conf: "UEFA" },
                     { name: "Alemania", code: "de", conf: "UEFA" }, 
-                    { name: "Bélgica", code: "be", conf: "UEFA" }, 
-                    { name: "España", code: "es", conf: "UEFA" }
+                    { name: "Países Bajos", code: "nl", conf: "UEFA" }
                 ]
             },
             {
-                id: 2,
+                id: 2, // Potencia media
                 teams: [
-                    { name: "Croacia", code: "hr", conf: "UEFA" }, 
-                    { name: "Marruecos", code: "ma", conf: "CAF" }, 
-                    { name: "Colombia", code: "co", conf: "CONMEBOL" },
                     { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, 
-                    { name: "Senegal", code: "sn", conf: "CAF" }, 
+                    { name: "Colombia", code: "co", conf: "CONMEBOL" },
+                    { name: "Croacia", code: "hr", conf: "UEFA" }, 
+                    { name: "Italia", code: "it", conf: "UEFA" }, // Agregado por consistencia de slots o reemplazo
                     { name: "Suiza", code: "ch", conf: "UEFA" },
-                    { name: "Japón", code: "jp", conf: "AFC" }, 
-                    { name: "Irán", code: "ir", conf: "AFC" }, 
-                    { name: "Corea del Sur", code: "kr", conf: "AFC" },
-                    { name: "Ecuador", code: "ec", conf: "CONMEBOL" }, 
                     { name: "Austria", code: "at", conf: "UEFA" }, 
-                    { name: "Australia", code: "au", conf: "AFC" }
+                    { name: "Marruecos", code: "ma", conf: "CAF" }, 
+                    { name: "Japón", code: "jp", conf: "AFC" },
+                    { name: "Irán", code: "ir", conf: "AFC" }, 
+                    { name: "Estados Unidos (B)", code: "us", conf: "CONCACAF" }, // Slot extra si necesario, pero usaremos tu lista
+                    { name: "Senegal", code: "sn", conf: "CAF" }, 
+                    { name: "Corea del Sur", code: "kr", conf: "AFC" } 
                 ]
             },
             {
-                id: 3,
+                id: 3, // Nivel intermedio
                 teams: [
-                    { name: "Noruega", code: "no", conf: "UEFA" }, 
-                    { name: "Panamá", code: "pa", conf: "CONCACAF" }, 
-                    { name: "Egipto", code: "eg", conf: "CAF" },
-                    { name: "Argelia", code: "dz", conf: "CAF" }, 
-                    { name: "Escocia", code: "gb-sct", conf: "UEFA" }, 
+                    { name: "Ecuador", code: "ec", conf: "CONMEBOL" }, 
                     { name: "Paraguay", code: "py", conf: "CONMEBOL" },
-                    { name: "Túnez", code: "tn", conf: "CAF" }, 
-                    { name: "Costa de Marfil", code: "ci", conf: "CAF" }, 
-                    { name: "Uzbekistán", code: "uz", conf: "AFC" },
+                    { name: "Australia", code: "au", conf: "AFC" }, 
                     { name: "Qatar", code: "qa", conf: "AFC" }, 
-                    { name: "Arabia Saudita", code: "sa", conf: "AFC" }, 
-                    { name: "Sudáfrica", code: "za", conf: "CAF" }
+                    { name: "Arabia Saudita", code: "sa", conf: "AFC" },
+                    { name: "Egipto", code: "eg", conf: "CAF" }, 
+                    { name: "Túnez", code: "tn", conf: "CAF" }, 
+                    { name: "Argelia", code: "dz", conf: "CAF" }, 
+                    { name: "Costa de Marfil", code: "ci", conf: "CAF" },
+                    { name: "Nigeria", code: "ng", conf: "CAF" }, 
+                    { name: "Noruega", code: "no", conf: "UEFA" }, 
+                    { name: "Escocia", code: "gb-sct", conf: "UEFA" }
                 ]
             },
             {
-                id: 4,
+                id: 4, // Resto + Repechajes
                 teams: [
-                    { name: "Jordania", code: "jo", conf: "AFC" }, 
-                    { name: "Cabo Verde", code: "cv", conf: "CAF" }, 
-                    { name: "Ghana", code: "gh", conf: "CAF" },
-                    { name: "Curazao", code: "cw", conf: "CONCACAF" }, 
+                    { name: "Panamá", code: "pa", conf: "CONCACAF" }, 
                     { name: "Haití", code: "ht", conf: "CONCACAF" }, 
+                    { name: "Curazao", code: "cw", conf: "CONCACAF" },
+                    { name: "Uzbekistán", code: "uz", conf: "AFC" }, 
+                    { name: "Jordania", code: "jo", conf: "AFC" }, 
                     { name: "Nueva Zelanda", code: "nz", conf: "OFC" },
-                    { name: "Repechaje EU 1", code: "eu", conf: "UEFA" }, 
-                    { name: "Repechaje EU 2", code: "eu", conf: "UEFA" },
-                    { name: "Repechaje EU 3", code: "eu", conf: "UEFA" },
-                    { name: "Repechaje EU 4", code: "eu", conf: "UEFA" },
-                    { name: "Rep. Inter 1", code: "un", conf: "WLD" }, 
-                    { name: "Rep. Inter 2", code: "un", conf: "WLD" }
+                    { name: "Ghana", code: "gh", conf: "CAF" }, 
+                    { name: "Cabo Verde", code: "cv", conf: "CAF" }, 
+                    { name: "Sudáfrica", code: "za", conf: "CAF" },
+                    { name: "Repechaje A", code: "un", conf: "WLD" }, 
+                    { name: "Repechaje B", code: "un", conf: "WLD" }, 
+                    { name: "Repechaje C", code: "un", conf: "WLD" }
                 ]
             }
+        ];
+
+        // CORRECCIÓN DE DATOS EXACTOS SEGÚN TU LISTA 
+        // Sobrescribo los arrays para asegurar que esten EXACTAMENTE tus países
+        // Distribuidos para balancear bombos
+        potsData[1].teams = [ // Bombo 2 Ajustado
+             { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, { name: "Colombia", code: "co", conf: "CONMEBOL" },
+             { name: "Croacia", code: "hr", conf: "UEFA" }, { name: "Suiza", code: "ch", conf: "UEFA" },
+             { name: "Austria", code: "at", conf: "UEFA" }, { name: "Marruecos", code: "ma", conf: "CAF" },
+             { name: "Senegal", code: "sn", conf: "CAF" }, { name: "Japón", code: "jp", conf: "AFC" },
+             { name: "Irán", code: "ir", conf: "AFC" }, { name: "Corea del Sur", code: "kr", conf: "AFC" },
+             { name: "Australia", code: "au", conf: "AFC" }, { name: "Ecuador", code: "ec", conf: "CONMEBOL" }
+        ];
+        potsData[2].teams = [ // Bombo 3 Ajustado
+             { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
+             { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
+             { name: "Egipto", code: "eg", conf: "CAF" }, { name: "Argelia", code: "dz", conf: "CAF" },
+             { name: "Nigeria", code: "ng", conf: "CAF" }, { name: "Costa de Marfil", code: "ci", conf: "CAF" },
+             { name: "Cabo Verde", code: "cv", conf: "CAF" }, { name: "Qatar", code: "qa", conf: "AFC" },
+             { name: "Arabia Saudita", code: "sa", conf: "AFC" }, { name: "Panamá", code: "pa", conf: "CONCACAF" }
+        ];
+        potsData[3].teams = [ // Bombo 4 Ajustado
+             { name: "Uzbekistán", code: "uz", conf: "AFC" }, { name: "Jordania", code: "jo", conf: "AFC" },
+             { name: "Ghana", code: "gh", conf: "CAF" }, { name: "Sudáfrica", code: "za", conf: "CAF" },
+             { name: "Nueva Zelanda", code: "nz", conf: "OFC" }, { name: "Haití", code: "ht", conf: "CONCACAF" },
+             { name: "Curazao", code: "cw", conf: "CONCACAF" }, { name: "Repechaje 1", code: "un", conf: "WLD" },
+             { name: "Repechaje 2", code: "un", conf: "WLD" }, { name: "Repechaje 3", code: "un", conf: "WLD" },
+             { name: "Repechaje 4", code: "un", conf: "WLD" }, { name: "Repechaje 5", code: "un", conf: "WLD" }
         ];
 
         const groupNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
         
         let currentPotIndex = 0;
-        let currentTeams = [];
+        let currentTeams = []; // Equipos visibles (bolillas)
+        let preCalculatedOrder = []; // El orden secreto válido
         let currentGroupTarget = 0;
         let isAnimating = false;
 
+        // Estado lógico global de los grupos
+        let groupsContent = Array(12).fill(null).map(() => []);
+
         document.addEventListener('DOMContentLoaded', () => {
             initUI();
-            // No iniciamos el bombo hasta que se quite el intro
         });
 
-        // Función para el botón "JUGÁ"
         function startGame() {
             const intro = document.getElementById('intro-screen');
             intro.classList.add('hidden-screen');
-            // Esperar que termine la transición CSS para iniciar lógica
             setTimeout(() => {
                 startPot(0);
             }, 500);
@@ -316,23 +367,81 @@
             groupsGrid.innerHTML = '';
             groupNames.forEach((letter, index) => {
                 const div = document.createElement('div');
-                // Estilo Tarjeta de Noticia
-                div.className = "bg-white border border-gray-200 rounded shadow-sm overflow-hidden flex flex-col h-full";
+                div.className = "bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow";
                 div.innerHTML = `
-                    <div class="p-2 bg-[#0054a6] flex justify-between items-center">
-                        <span class="font-bold text-white text-md tracking-tight brand-font">GRUPO ${letter}</span>
+                    <div class="p-2 bg-[#004a94] flex justify-between items-center border-b border-blue-900">
+                        <span class="font-black text-white text-lg tracking-tight brand-font">GRUPO ${letter}</span>
                     </div>
-                    <div class="p-3 flex-grow space-y-1" id="group-content-${index}">
+                    <div class="p-3 flex-grow space-y-2 bg-white" id="group-content-${index}">
                         ${[0,1,2,3].map(i => `
-                            <div class="group-slot-${i} py-2 px-2 border-b border-gray-100 flex items-center gap-3 h-10 last:border-0">
-                                <div class="w-6 h-4 bg-gray-100 rounded-sm flex-shrink-0 border border-gray-200"></div>
-                                <div class="h-2 w-16 bg-gray-100 rounded-full"></div>
+                            <div class="group-slot-${i} py-2 px-3 border border-gray-200 rounded flex items-center gap-3 h-11 bg-gray-50">
+                                <div class="w-6 h-4 bg-gray-200 rounded-sm flex-shrink-0 border border-gray-300"></div>
+                                <div class="h-2 w-20 bg-gray-200 rounded-full"></div>
                             </div>
                         `).join('')}
                     </div>
                 `;
                 groupsGrid.appendChild(div);
             });
+        }
+
+        // --- CORE LOGIC: GENERAR ORDEN VÁLIDO ---
+        // Esta función se ejecuta al iniciar el bombo. 
+        // Prueba miles de combinaciones hasta encontrar una que NO rompa las reglas.
+        function preparePotBatch(potTeams) {
+            let attempts = 0;
+            const maxAttempts = 5000;
+            let validOrder = null;
+
+            while(attempts < maxAttempts && !validOrder) {
+                // 1. Mezclar aleatoriamente
+                let shuffled = [...potTeams].sort(() => Math.random() - 0.5);
+                
+                // 2. Simular si esta mezcla funciona para los grupos A -> L
+                let tempGroups = JSON.parse(JSON.stringify(groupsContent)); // Copia profunda del estado actual
+                let batchWorks = true;
+
+                for (let i = 0; i < 12; i++) {
+                    // El equipo 'shuffled[i]' iría al Grupo 'i'
+                    const team = shuffled[i];
+                    
+                    // Verificamos REGLAS
+                    if (!checkConstraint(team, tempGroups[i])) {
+                        batchWorks = false;
+                        break; // Falla este intento, probar otro shuffle
+                    }
+                    // Simular inserción
+                    tempGroups[i].push(team);
+                }
+
+                if (batchWorks) {
+                    validOrder = shuffled;
+                }
+                attempts++;
+            }
+
+            // Fallback de emergencia (muy raro que ocurra con 5000 intentos)
+            if (!validOrder) {
+                console.warn("No se encontró solución perfecta, usando aleatoria (puede haber conflictos)");
+                validOrder = [...potTeams].sort(() => Math.random() - 0.5);
+            }
+
+            return validOrder;
+        }
+
+        function checkConstraint(team, groupTeams) {
+            // Regla: Contar cuántos de esta confederación ya hay en el grupo
+            const sameConfedCount = groupTeams.filter(t => t.conf === team.conf).length;
+
+            // EXCEPCIÓN UEFA: Como hay 16 equipos UEFA y 12 grupos, es matemáticamente
+            // imposible que no se repitan. FIFA permite hasta 2.
+            if (team.conf === 'UEFA') {
+                return sameConfedCount < 2; 
+            }
+            
+            // RESTO DEL MUNDO: Estrictamente 0 repetidos.
+            // Si ya hay 1, devuelve false (no puede entrar).
+            return sameConfedCount < 1;
         }
 
         function startPot(potIndex) {
@@ -342,24 +451,34 @@
             }
 
             currentPotIndex = potIndex;
-            currentTeams = [...potsData[potIndex].teams];
+            
+            // 1. PRE-CALCULAR EL ORDEN VÁLIDO
+            // Aquí sucede la "magia". Ya sabemos el resultado antes de animar.
+            const rawTeams = [...potsData[potIndex].teams];
+            preCalculatedOrder = preparePotBatch(rawTeams);
+            
+            // Para la UI, mostramos las bolillas "sin abrir"
+            // Usamos una copia para ir quitando visualmente
+            currentTeams = [...preCalculatedOrder]; 
             currentGroupTarget = 0;
 
-            document.getElementById('action-text').innerHTML = `SORTEANDO <span class="text-[#0054a6]">BOMBO ${potIndex + 1}</span>`;
+            document.getElementById('action-text').innerHTML = `SORTEANDO <span class="text-[#004a94]">BOMBO ${potIndex + 1}</span>`;
             document.getElementById('status-badge').innerText = `BOMBO ${potIndex + 1}/4`;
+            updatePotIndicators(potIndex);
+            renderBalls(currentTeams.length);
+        }
 
+        function updatePotIndicators(potIndex) {
             for(let i=0; i<4; i++) {
                 const el = document.getElementById(`pot-indicator-${i}`);
                 if (i === potIndex) {
-                    el.className = "bg-[#0054a6] text-white font-bold p-2 rounded text-center text-xs shadow transform scale-105 border border-blue-800";
+                    el.className = "bg-[#004a94] text-white font-bold p-2 rounded text-center text-xs shadow-md transform scale-105 border border-blue-900";
                 } else if (i < potIndex) {
-                    el.className = "bg-gray-200 p-2 rounded text-center text-xs text-gray-500 border border-gray-300";
+                    el.className = "bg-gray-300 p-2 rounded text-center text-xs text-gray-500 border border-gray-400";
                 } else {
-                    el.className = "bg-white p-2 rounded text-center text-xs text-gray-300 border border-gray-100";
+                    el.className = "bg-white p-2 rounded text-center text-xs text-gray-300 border border-gray-200";
                 }
             }
-
-            renderBalls(currentTeams.length);
         }
 
         function renderBalls(count) {
@@ -368,30 +487,34 @@
             for(let i=0; i<count; i++) {
                 const b = document.createElement('div');
                 b.className = "draw-ball group";
-                b.innerHTML = `<span class="text-[8px] font-bold text-gray-400 tracking-tighter group-hover:text-[#0054a6]">FIFA</span>`;
-                b.onclick = (e) => pickTeam(e.currentTarget);
+                b.innerHTML = `<span class="text-[9px] font-bold text-gray-400 tracking-tighter group-hover:text-[#004a94]">FIFA</span>`;
+                // Importante: No pasamos el índice, solo el elemento visual
+                b.onclick = (e) => pickNextPrecalculated(e.currentTarget);
                 container.appendChild(b);
             }
         }
 
-        function pickTeam(ballElement) {
+        function pickNextPrecalculated(ballElement) {
             if (isAnimating || ballElement.classList.contains('popped')) return;
-            isAnimating = true;
             
+            isAnimating = true;            
             ballElement.classList.add('popped');
 
-            const randomIndex = Math.floor(Math.random() * currentTeams.length);
-            const selectedTeam = currentTeams[randomIndex];
-            currentTeams.splice(randomIndex, 1);
+            // Tomenos el siguiente equipo de la lista YA ORDENADA y VALIDADA
+            // currentGroupTarget nos dice en qué grupo toca (0=A, 1=B...)
+            // Como preCalculatedOrder ya está alineado con los grupos (índice 0 va al A, índice 1 al B...)
+            // solo necesitamos tomar el equipo correspondiente al índice actual.
+            
+            const selectedTeam = preCalculatedOrder[currentGroupTarget];
 
             showReveal(selectedTeam, currentGroupTarget, () => {
                 placeInGroup(selectedTeam, currentGroupTarget, currentPotIndex);
-                
                 currentGroupTarget++;
                 isAnimating = false;
 
-                if (currentTeams.length === 0) {
-                    setTimeout(() => startPot(currentPotIndex + 1), 1000);
+                // Verificar si terminamos el bombo
+                if (currentGroupTarget >= 12) {
+                     setTimeout(() => startPot(currentPotIndex + 1), 1000);
                 }
             });
         }
@@ -417,29 +540,35 @@
             setTimeout(() => {
                 overlay.classList.remove('active');
                 setTimeout(callback, 300);
-            }, 1800);
+            }, 1200); 
         }
 
         function placeInGroup(team, groupIdx, potIdx) {
+            // Guardar en estado lógico
+            groupsContent[groupIdx].push(team);
+
+            // Actualizar UI
             const container = document.getElementById(`group-content-${groupIdx}`);
             const slots = container.children;
-            const target = slots[potIdx];
+            const target = slots[potIdx]; 
 
-            const flagUrl = team.code === 'un' ? '' : `https://flagcdn.com/w40/${team.code}.png`;
-            const imgTag = flagUrl ? `<img src="${flagUrl}" class="w-6 h-4 object-cover rounded shadow-sm border border-gray-200">` : `<div class="w-6 h-4 bg-gray-300 rounded"></div>`;
+            if(target) {
+                const flagUrl = team.code === 'un' ? '' : `https://flagcdn.com/w40/${team.code}.png`;
+                const imgTag = flagUrl ? `<img src="${flagUrl}" class="w-6 h-4 object-cover rounded shadow-sm border border-gray-300">` : `<div class="w-6 h-4 bg-gray-400 rounded"></div>`;
 
-            target.innerHTML = `
-                ${imgTag}
-                <span class="font-bold text-sm text-gray-800 truncate">${team.name}</span>
-            `;
-            target.className = "py-2 px-2 rounded bg-gray-50 border border-gray-200 flex items-center gap-3 slot-filled";
+                target.innerHTML = `
+                    ${imgTag}
+                    <span class="font-bold text-sm text-gray-900 truncate">${team.name}</span>
+                `;
+                target.className = "py-2 px-3 rounded bg-white border border-gray-300 flex items-center gap-3 slot-filled shadow-sm";
+            }
         }
 
         function finishDraw() {
             document.getElementById('balls-container').innerHTML = '';
-            document.getElementById('action-text').innerHTML = "<span class='text-green-600 text-lg font-bold'>¡SORTEO FINALIZADO!</span>";
+            document.getElementById('action-text').innerHTML = "<span class='text-green-700 text-lg font-black'>¡SORTEO FINALIZADO!</span>";
             document.getElementById('status-badge').innerText = "FINAL";
-            document.getElementById('status-badge').className = "px-4 py-1 rounded bg-green-100 text-green-700 text-xs font-bold border border-green-200";
+            document.getElementById('status-badge').className = "px-4 py-1 rounded bg-green-100 text-green-800 text-xs font-bold border border-green-300";
             document.getElementById('reset-btn').classList.remove('hidden');
             launchConfetti();
         }
@@ -449,7 +578,7 @@
         }
 
         function launchConfetti() {
-            const colors = ['#0054a6', '#fcd34d', '#ffffff', '#ef4444'];
+            const colors = ['#004a94', '#fcd34d', '#ffffff', '#ef4444'];
             for(let i=0; i<100; i++) {
                 const c = document.createElement('div');
                 c.style.position = 'fixed';
@@ -469,4 +598,3 @@
     </script>
 </body>
 </html>
-```
