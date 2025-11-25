@@ -121,29 +121,19 @@
             100% { background-color: #ffffff; color: black; }
         }
 
-        /* Publicidad Style */
-        .ad-placeholder {
-            background-color: #d1d5db; /* Gris más oscuro standard ads */
-            border: 1px solid #9ca3af;
-            color: #4b5563;
+        /* --- Estilo para la caja de instrucciones --- */
+        .instruction-box {
+            background-color: #eff6ff; /* Azul muy claro (bg-blue-50) */
+            border: 1px solid #bfdbfe; /* Borde azul claro (border-blue-200) */
+            color: #1e3a8a; /* Texto azul oscuro (text-blue-900) */
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            font-family: sans-serif;
-            margin: 0 auto 15px auto;
-            position: relative;
-            overflow: hidden;
-        }
-        .ad-label {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: #9ca3af;
-            color: white;
-            font-size: 9px;
-            padding: 2px 4px;
-            text-transform: uppercase;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            margin: 0 auto; /* Centrado horizontal */
+            padding: 12px 16px; /* Padding interno */
+            border-radius: 8px; /* Bordes redondeados */
         }
     </style>
 </head>
@@ -155,7 +145,7 @@
         </h1>
         <p class="text-xl md:text-2xl text-gray-700 mb-10 font-light max-w-2xl">
             Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.<br>
-            
+           
         </p>
         <button onclick="startGame()" class="bg-[#004a94] text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800">
             Comenzar Sorteo
@@ -169,7 +159,7 @@
 
     <main class="flex-grow container mx-auto p-4 md:p-8 space-y-8">        
         
-        <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3 mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3">
             <div>
                 <h2 class="text-3xl font-black text-gray-900">SORTEO MUNDIAL 2026</h2>
                 
@@ -179,7 +169,15 @@
             </div>
         </div>
 
-        <section class="grid grid-cols-4 gap-2 md:gap-4 mb-8">
+        <div class="w-full flex justify-center my-6 px-4 z-10 relative">
+            <div class="w-full max-w-[728px] h-[90px] bg-gray-100 border border-gray-300 flex flex-col items-center justify-center text-gray-400 rounded overflow-hidden relative shadow-sm">
+            <span class="absolute top-0 right-0 bg-gray-200 text-[9px] px-2 py-0.5 text-gray-500 uppercase tracking-wider">Publicidad</span>
+            <span class="font-bold uppercase tracking-widest">Espacio Publicitario</span>
+            <span class="text-xs opacity-75">Leaderboard Estándar (728 x 90)</span>
+            </div>
+        </div>
+
+        <section class="grid grid-cols-4 gap-2 md:gap-4">
             <div id="pot-indicator-0" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 1</div>
             <div id="pot-indicator-1" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 2</div>
             <div id="pot-indicator-2" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 3</div>
@@ -189,20 +187,27 @@
         <div id="groups-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             </div>
 
-        <div class="h-48"></div> </main>
+        <div class="h-56"></div> </main>
 
     <footer class="fixed bottom-0 w-full z-30 bg-white border-t-2 border-gray-300 shadow-[0_-5px_25px_rgba(0,0,0,0.1)] pb-safe">
         <div class="container mx-auto px-4 py-3">
             
-            <div class="w-full flex justify-center mb-3">
-                <div class="ad-placeholder w-[320px] h-[50px] md:w-[728px] md:h-[90px] rounded-sm">
-                    <div class="ad-label">Publicidad</div>
-                    <span class="text-xl md:text-3xl font-black text-gray-400 opacity-50 uppercase tracking-widest">Espacio Publicitario</span>
+            <div class="w-full flex justify-center mb-2">
+                <div class="instruction-box w-full md:w-auto shadow-sm mx-2">
+                    <p class="text-sm md:text-base font-medium flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-500 hidden md:block flex-shrink-0">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                        </svg>
+                        <span>
+                            <span class="font-bold uppercase">Cómo funciona:</span>
+                            Presioná las bolas FIFA ⚽ en la barra inferior para sortear y revelar el siguiente país.
+                        </span>
+                    </p>
                 </div>
             </div>
 
-            <div class="text-center">
-                <h2 id="action-text" class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Seleccioná una bola</h2>
+            <div class="text-center mt-1">
+                <h2 id="action-text" class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest animate-pulse">Seleccioná una bola para comenzar</h2>
                 
                 <div id="balls-container" class="flex flex-wrap justify-center gap-4 min-h-[60px]">
                     </div>
@@ -239,10 +244,7 @@
     <script>
         /* --- DATA --- */
 
-        // CORRECCIÓN: Asignación específica de grupos para anfitriones.
-        // México -> Grupo A (índice 0)
-        // Canadá -> Grupo B (índice 1)
-        // EE.UU -> Grupo D (índice 3)
+        // Asignación específica de grupos para anfitriones.
         const hostAssignments = [
             { team: { name: "México", code: "mx", conf: "CONCACAF" }, groupIndex: 0 },        // Grupo A
             { team: { name: "Canadá", code: "ca", conf: "CONCACAF" }, groupIndex: 1 },        // Grupo B
