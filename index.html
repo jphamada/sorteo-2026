@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -240,11 +241,10 @@
             </div>
         </div>
     </div>
-
     <script>
-        /* --- DATA --- */
+        /* --- DATA CONFIGURADA CON TU LISTADO OFICIAL --- */
 
-        // Asignación específica de grupos para anfitriones.
+        // Anfitriones con asignación fija de grupos.
         const hostAssignments = [
             { team: { name: "México", code: "mx", conf: "CONCACAF" }, groupIndex: 0 },        // Grupo A
             { team: { name: "Canadá", code: "ca", conf: "CONCACAF" }, groupIndex: 1 },        // Grupo B
@@ -267,36 +267,39 @@
                 ]
             },
             {
-                id: 2, // Bombo 2
+                id: 2, // Bombo 2 (12 equipos)
                 teams: [
-                     { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, { name: "Colombia", code: "co", conf: "CONMEBOL" },
-                     { name: "Croacia", code: "hr", conf: "UEFA" }, { name: "Suiza", code: "ch", conf: "UEFA" },
-                     { name: "Austria", code: "at", conf: "UEFA" }, { name: "Marruecos", code: "ma", conf: "CAF" },
-                     { name: "Senegal", code: "sn", conf: "CAF" }, { name: "Japón", code: "jp", conf: "AFC" },
-                     { name: "Irán", code: "ir", conf: "AFC" }, { name: "Corea del Sur", code: "kr", conf: "AFC" },
-                     { name: "Australia", code: "au", conf: "AFC" }, { name: "Ecuador", code: "ec", conf: "CONMEBOL" }
+                    { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, { name: "Colombia", code: "co", conf: "CONMEBOL" },
+                    { name: "Croacia", code: "hr", conf: "UEFA" }, { name: "Suiza", code: "ch", conf: "UEFA" },
+                    { name: "Austria", code: "at", conf: "UEFA" }, { name: "Marruecos", code: "ma", conf: "CAF" },
+                    { name: "Senegal", code: "sn", conf: "CAF" }, { name: "Japón", code: "jp", conf: "AFC" },
+                    { name: "Irán", code: "ir", conf: "AFC" }, { name: "Corea del Sur", code: "kr", conf: "AFC" },
+                    { name: "Australia", code: "au", conf: "AFC" }, { name: "Ecuador", code: "ec", conf: "CONMEBOL" }
                 ]
             },
             {
-                id: 3, // Bombo 3
+                id: 3, // Bombo 3 (12 equipos) - AJUSTADO: Sale Nigeria, entra Ghana
                 teams: [
-                     { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
-                     { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
-                     { name: "Egipto", code: "eg", conf: "CAF" }, { name: "Argelia", code: "dz", conf: "CAF" },
-                     { name: "Nigeria", code: "ng", conf: "CAF" }, { name: "Costa de Marfil", code: "ci", conf: "CAF" },
-                     { name: "Cabo Verde", code: "cv", conf: "CAF" }, { name: "Qatar", code: "qa", conf: "AFC" },
-                     { name: "Arabia Saudita", code: "sa", conf: "AFC" }, { name: "Panamá", code: "pa", conf: "CONCACAF" }
+                    { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
+                    { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
+                    { name: "Egipto", code: "eg", conf: "CAF" }, { name: "Argelia", code: "dz", conf: "CAF" },
+                    // Nigeria eliminada
+                    { name: "Ghana", code: "gh", conf: "CAF" }, // Movido desde Bombo 4
+                    { name: "Costa de Marfil", code: "ci", conf: "CAF" },
+                    { name: "Cabo Verde", code: "cv", conf: "CAF" }, { name: "Qatar", code: "qa", conf: "AFC" },
+                    { name: "Arabia Saudita", code: "sa", conf: "AFC" }, { name: "Panamá", code: "pa", conf: "CONCACAF" }
                 ]
             },
             {
-                id: 4, // Bombo 4
+                id: 4, // Bombo 4 (12 equipos) - AJUSTADO: Agregado un Repechaje extra
                 teams: [
-                     { name: "Uzbekistán", code: "uz", conf: "AFC" }, { name: "Jordania", code: "jo", conf: "AFC" },
-                     { name: "Ghana", code: "gh", conf: "CAF" }, { name: "Sudáfrica", code: "za", conf: "CAF" },
-                     { name: "Nueva Zelanda", code: "nz", conf: "OFC" }, { name: "Haití", code: "ht", conf: "CONCACAF" },
-                     { name: "Curazao", code: "cw", conf: "CONCACAF" }, { name: "Repechaje 1", code: "un", conf: "WLD" },
-                     { name: "Repechaje 2", code: "un", conf: "WLD" }, { name: "Repechaje 3", code: "un", conf: "WLD" },
-                     { name: "Repechaje 4", code: "un", conf: "WLD" }, { name: "Repechaje 5", code: "un", conf: "WLD" }
+                    { name: "Uzbekistán", code: "uz", conf: "AFC" }, { name: "Jordania", code: "jo", conf: "AFC" },
+                    { name: "Sudáfrica", code: "za", conf: "CAF" }, // Ghana subió al bombo 3
+                    { name: "Nueva Zelanda", code: "nz", conf: "OFC" }, { name: "Haití", code: "ht", conf: "CONCACAF" },
+                    { name: "Curazao", code: "cw", conf: "CONCACAF" }, 
+                    { name: "Repechaje 1", code: "un", conf: "WLD" }, { name: "Repechaje 2", code: "un", conf: "WLD" }, 
+                    { name: "Repechaje 3", code: "un", conf: "WLD" }, { name: "Repechaje 4", code: "un", conf: "WLD" }, 
+                    { name: "Repechaje 5", code: "un", conf: "WLD" }, { name: "Repechaje 6", code: "un", conf: "WLD" } // Nuevo
                 ]
             }
         ];
@@ -501,7 +504,7 @@
                 let remainingSlots = preCalculatedOrder.slice(currentGroupTarget).filter(t => t !== null).length;
                 
                 if (remainingSlots === 0) {
-                     setTimeout(() => startPot(currentPotIndex + 1), 1000);
+                    setTimeout(() => startPot(currentPotIndex + 1), 1000);
                 }
             });
         }
@@ -533,7 +536,7 @@
         function placeInGroup(team, groupIdx, potIdx, animate = true) {
             // Guardar en estado lógico si no estaba ya
             if (!groupsContent[groupIdx][potIdx]) {
-                 groupsContent[groupIdx][potIdx] = team;
+                groupsContent[groupIdx][potIdx] = team;
             }
 
             // Actualizar UI
