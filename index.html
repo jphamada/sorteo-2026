@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -156,6 +155,7 @@
         </h1>
         <p class="text-xl md:text-2xl text-gray-700 mb-10 font-light max-w-2xl">
             Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.<br>
+            <span class="text-sm text-gray-500 mt-2 block">(Reglas aplicadas: Anfitriones preasignados (A, B, D) y restricción de confederaciones).</span>
         </p>
         <button onclick="startGame()" class="bg-[#004a94] text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800">
             Comenzar Sorteo
@@ -172,7 +172,7 @@
         <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3 mb-6">
             <div>
                 <h2 class="text-3xl font-black text-gray-900">SORTEO MUNDIAL 2026</h2>
-                
+                <p class="text-sm text-gray-600 mt-1 font-medium">Distribución oficial: México (A), Canadá (B), EE.UU (D)</p>
             </div>
             <div id="status-badge" class="mt-2 md:mt-0 px-4 py-2 bg-white text-[#004a94] text-sm font-bold uppercase tracking-wider rounded shadow-sm border border-gray-300">
                 Esperando inicio
@@ -237,19 +237,22 @@
     </div>
 
     <script>
-        /* --- DATA CONFIGURADA CON TU LISTADO ---
-           Se han distribuido los países en 4 bombos basados en ranking aproximado
-           para mantener el realismo del simulador.
-           Total equipos: 42 de tu lista + 6 Repechajes = 48.
-        */
+        /* --- DATA --- */
+
+        // CORRECCIÓN: Asignación específica de grupos para anfitriones.
+        // México -> Grupo A (índice 0)
+        // Canadá -> Grupo B (índice 1)
+        // EE.UU -> Grupo D (índice 3)
+        const hostAssignments = [
+            { team: { name: "México", code: "mx", conf: "CONCACAF" }, groupIndex: 0 },        // Grupo A
+            { team: { name: "Canadá", code: "ca", conf: "CONCACAF" }, groupIndex: 1 },        // Grupo B
+            { team: { name: "Estados Unidos", code: "us", conf: "CONCACAF" }, groupIndex: 3 } // Grupo D
+        ];
 
         const potsData = [
             {
-                id: 1, // Cabezas de Serie
+                id: 1, // Cabezas de Serie Restantes (9 equipos)
                 teams: [
-                    { name: "Estados Unidos", code: "us", conf: "CONCACAF" }, 
-                    { name: "México", code: "mx", conf: "CONCACAF" }, 
-                    { name: "Canadá", code: "ca", conf: "CONCACAF" },
                     { name: "Argentina", code: "ar", conf: "CONMEBOL" }, 
                     { name: "Brasil", code: "br", conf: "CONMEBOL" }, 
                     { name: "Inglaterra", code: "gb-eng", conf: "UEFA" },
@@ -262,91 +265,45 @@
                 ]
             },
             {
-                id: 2, // Potencia media
+                id: 2, // Bombo 2
                 teams: [
-                    { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, 
-                    { name: "Colombia", code: "co", conf: "CONMEBOL" },
-                    { name: "Croacia", code: "hr", conf: "UEFA" }, 
-                    { name: "Italia", code: "it", conf: "UEFA" }, // Agregado por consistencia de slots o reemplazo
-                    { name: "Suiza", code: "ch", conf: "UEFA" },
-                    { name: "Austria", code: "at", conf: "UEFA" }, 
-                    { name: "Marruecos", code: "ma", conf: "CAF" }, 
-                    { name: "Japón", code: "jp", conf: "AFC" },
-                    { name: "Irán", code: "ir", conf: "AFC" }, 
-                    { name: "Estados Unidos (B)", code: "us", conf: "CONCACAF" }, // Slot extra si necesario, pero usaremos tu lista
-                    { name: "Senegal", code: "sn", conf: "CAF" }, 
-                    { name: "Corea del Sur", code: "kr", conf: "AFC" } 
+                     { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, { name: "Colombia", code: "co", conf: "CONMEBOL" },
+                     { name: "Croacia", code: "hr", conf: "UEFA" }, { name: "Suiza", code: "ch", conf: "UEFA" },
+                     { name: "Austria", code: "at", conf: "UEFA" }, { name: "Marruecos", code: "ma", conf: "CAF" },
+                     { name: "Senegal", code: "sn", conf: "CAF" }, { name: "Japón", code: "jp", conf: "AFC" },
+                     { name: "Irán", code: "ir", conf: "AFC" }, { name: "Corea del Sur", code: "kr", conf: "AFC" },
+                     { name: "Australia", code: "au", conf: "AFC" }, { name: "Ecuador", code: "ec", conf: "CONMEBOL" }
                 ]
             },
             {
-                id: 3, // Nivel intermedio
+                id: 3, // Bombo 3
                 teams: [
-                    { name: "Ecuador", code: "ec", conf: "CONMEBOL" }, 
-                    { name: "Paraguay", code: "py", conf: "CONMEBOL" },
-                    { name: "Australia", code: "au", conf: "AFC" }, 
-                    { name: "Qatar", code: "qa", conf: "AFC" }, 
-                    { name: "Arabia Saudita", code: "sa", conf: "AFC" },
-                    { name: "Egipto", code: "eg", conf: "CAF" }, 
-                    { name: "Túnez", code: "tn", conf: "CAF" }, 
-                    { name: "Argelia", code: "dz", conf: "CAF" }, 
-                    { name: "Costa de Marfil", code: "ci", conf: "CAF" },
-                    { name: "Nigeria", code: "ng", conf: "CAF" }, 
-                    { name: "Noruega", code: "no", conf: "UEFA" }, 
-                    { name: "Escocia", code: "gb-sct", conf: "UEFA" }
+                     { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
+                     { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
+                     { name: "Egipto", code: "eg", conf: "CAF" }, { name: "Argelia", code: "dz", conf: "CAF" },
+                     { name: "Nigeria", code: "ng", conf: "CAF" }, { name: "Costa de Marfil", code: "ci", conf: "CAF" },
+                     { name: "Cabo Verde", code: "cv", conf: "CAF" }, { name: "Qatar", code: "qa", conf: "AFC" },
+                     { name: "Arabia Saudita", code: "sa", conf: "AFC" }, { name: "Panamá", code: "pa", conf: "CONCACAF" }
                 ]
             },
             {
-                id: 4, // Resto + Repechajes
+                id: 4, // Bombo 4
                 teams: [
-                    { name: "Panamá", code: "pa", conf: "CONCACAF" }, 
-                    { name: "Haití", code: "ht", conf: "CONCACAF" }, 
-                    { name: "Curazao", code: "cw", conf: "CONCACAF" },
-                    { name: "Uzbekistán", code: "uz", conf: "AFC" }, 
-                    { name: "Jordania", code: "jo", conf: "AFC" }, 
-                    { name: "Nueva Zelanda", code: "nz", conf: "OFC" },
-                    { name: "Ghana", code: "gh", conf: "CAF" }, 
-                    { name: "Cabo Verde", code: "cv", conf: "CAF" }, 
-                    { name: "Sudáfrica", code: "za", conf: "CAF" },
-                    { name: "Repechaje A", code: "un", conf: "WLD" }, 
-                    { name: "Repechaje B", code: "un", conf: "WLD" }, 
-                    { name: "Repechaje C", code: "un", conf: "WLD" }
+                     { name: "Uzbekistán", code: "uz", conf: "AFC" }, { name: "Jordania", code: "jo", conf: "AFC" },
+                     { name: "Ghana", code: "gh", conf: "CAF" }, { name: "Sudáfrica", code: "za", conf: "CAF" },
+                     { name: "Nueva Zelanda", code: "nz", conf: "OFC" }, { name: "Haití", code: "ht", conf: "CONCACAF" },
+                     { name: "Curazao", code: "cw", conf: "CONCACAF" }, { name: "Repechaje 1", code: "un", conf: "WLD" },
+                     { name: "Repechaje 2", code: "un", conf: "WLD" }, { name: "Repechaje 3", code: "un", conf: "WLD" },
+                     { name: "Repechaje 4", code: "un", conf: "WLD" }, { name: "Repechaje 5", code: "un", conf: "WLD" }
                 ]
             }
-        ];
-
-        // CORRECCIÓN DE DATOS EXACTOS SEGÚN TU LISTA 
-        // Sobrescribo los arrays para asegurar que esten EXACTAMENTE tus países
-        // Distribuidos para balancear bombos
-        potsData[1].teams = [ // Bombo 2 Ajustado
-             { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, { name: "Colombia", code: "co", conf: "CONMEBOL" },
-             { name: "Croacia", code: "hr", conf: "UEFA" }, { name: "Suiza", code: "ch", conf: "UEFA" },
-             { name: "Austria", code: "at", conf: "UEFA" }, { name: "Marruecos", code: "ma", conf: "CAF" },
-             { name: "Senegal", code: "sn", conf: "CAF" }, { name: "Japón", code: "jp", conf: "AFC" },
-             { name: "Irán", code: "ir", conf: "AFC" }, { name: "Corea del Sur", code: "kr", conf: "AFC" },
-             { name: "Australia", code: "au", conf: "AFC" }, { name: "Ecuador", code: "ec", conf: "CONMEBOL" }
-        ];
-        potsData[2].teams = [ // Bombo 3 Ajustado
-             { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
-             { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
-             { name: "Egipto", code: "eg", conf: "CAF" }, { name: "Argelia", code: "dz", conf: "CAF" },
-             { name: "Nigeria", code: "ng", conf: "CAF" }, { name: "Costa de Marfil", code: "ci", conf: "CAF" },
-             { name: "Cabo Verde", code: "cv", conf: "CAF" }, { name: "Qatar", code: "qa", conf: "AFC" },
-             { name: "Arabia Saudita", code: "sa", conf: "AFC" }, { name: "Panamá", code: "pa", conf: "CONCACAF" }
-        ];
-        potsData[3].teams = [ // Bombo 4 Ajustado
-             { name: "Uzbekistán", code: "uz", conf: "AFC" }, { name: "Jordania", code: "jo", conf: "AFC" },
-             { name: "Ghana", code: "gh", conf: "CAF" }, { name: "Sudáfrica", code: "za", conf: "CAF" },
-             { name: "Nueva Zelanda", code: "nz", conf: "OFC" }, { name: "Haití", code: "ht", conf: "CONCACAF" },
-             { name: "Curazao", code: "cw", conf: "CONCACAF" }, { name: "Repechaje 1", code: "un", conf: "WLD" },
-             { name: "Repechaje 2", code: "un", conf: "WLD" }, { name: "Repechaje 3", code: "un", conf: "WLD" },
-             { name: "Repechaje 4", code: "un", conf: "WLD" }, { name: "Repechaje 5", code: "un", conf: "WLD" }
         ];
 
         const groupNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
         
         let currentPotIndex = 0;
-        let currentTeams = []; // Equipos visibles (bolillas)
-        let preCalculatedOrder = []; // El orden secreto válido
+        let currentTeams = []; 
+        let preCalculatedOrder = []; 
         let currentGroupTarget = 0;
         let isAnimating = false;
 
@@ -355,6 +312,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initUI();
+            preFillHosts();
         });
 
         function startGame() {
@@ -388,32 +346,36 @@
             });
         }
 
-        // --- CORE LOGIC: GENERAR ORDEN VÁLIDO ---
-        // Esta función se ejecuta al iniciar el bombo. 
-        // Prueba miles de combinaciones hasta encontrar una que NO rompa las reglas.
+        function preFillHosts() {
+            hostAssignments.forEach(assignment => {
+                // 1. Colocar en estado lógico en la posición 0 (cabeza de serie)
+                groupsContent[assignment.groupIndex][0] = assignment.team;
+                // 2. Actualizar UI inmediatamente
+                placeInGroup(assignment.team, assignment.groupIndex, 0, false); // false = sin animación flash
+            });
+            document.getElementById('status-badge').innerText = "ANFITRIONES ASIGNADOS";
+        }
+
+
+        // --- CORE LOGIC: GENERAR ORDEN VÁLIDO (PARA BOMBOS 2, 3 y 4) ---
         function preparePotBatch(potTeams) {
             let attempts = 0;
             const maxAttempts = 5000;
             let validOrder = null;
 
             while(attempts < maxAttempts && !validOrder) {
-                // 1. Mezclar aleatoriamente
                 let shuffled = [...potTeams].sort(() => Math.random() - 0.5);
-                
-                // 2. Simular si esta mezcla funciona para los grupos A -> L
-                let tempGroups = JSON.parse(JSON.stringify(groupsContent)); // Copia profunda del estado actual
+                // Copia profunda del estado actual
+                let tempGroups = JSON.parse(JSON.stringify(groupsContent)); 
                 let batchWorks = true;
 
                 for (let i = 0; i < 12; i++) {
-                    // El equipo 'shuffled[i]' iría al Grupo 'i'
                     const team = shuffled[i];
-                    
-                    // Verificamos REGLAS
+                    // Validamos contra el estado actual del grupo temporal
                     if (!checkConstraint(team, tempGroups[i])) {
                         batchWorks = false;
-                        break; // Falla este intento, probar otro shuffle
+                        break;
                     }
-                    // Simular inserción
                     tempGroups[i].push(team);
                 }
 
@@ -423,27 +385,21 @@
                 attempts++;
             }
 
-            // Fallback de emergencia (muy raro que ocurra con 5000 intentos)
             if (!validOrder) {
-                console.warn("No se encontró solución perfecta, usando aleatoria (puede haber conflictos)");
+                console.warn("Usando orden aleatorio por fallo en pre-cálculo.");
                 validOrder = [...potTeams].sort(() => Math.random() - 0.5);
             }
-
             return validOrder;
         }
 
         function checkConstraint(team, groupTeams) {
-            // Regla: Contar cuántos de esta confederación ya hay en el grupo
-            const sameConfedCount = groupTeams.filter(t => t.conf === team.conf).length;
+            // Filtramos los nulls por si acaso (por la pre-asignación del bombo 1)
+            const activeTeams = groupTeams.filter(t => t !== null);
+            const sameConfedCount = activeTeams.filter(t => t.conf === team.conf).length;
 
-            // EXCEPCIÓN UEFA: Como hay 16 equipos UEFA y 12 grupos, es matemáticamente
-            // imposible que no se repitan. FIFA permite hasta 2.
             if (team.conf === 'UEFA') {
                 return sameConfedCount < 2; 
             }
-            
-            // RESTO DEL MUNDO: Estrictamente 0 repetidos.
-            // Si ya hay 1, devuelve false (no puede entrar).
             return sameConfedCount < 1;
         }
 
@@ -454,16 +410,39 @@
             }
 
             currentPotIndex = potIndex;
-            
-            // 1. PRE-CALCULAR EL ORDEN VÁLIDO
-            // Aquí sucede la "magia". Ya sabemos el resultado antes de animar.
             const rawTeams = [...potsData[potIndex].teams];
-            preCalculatedOrder = preparePotBatch(rawTeams);
+
+            // Lógica especial para el Bombo 1 (Cabezas de serie restantes)
+            if (potIndex === 0) {
+                // Mezclamos los 9 equipos restantes
+                let shuffledRemaining = rawTeams.sort(() => Math.random() - 0.5);
+                
+                // Creamos un array de 12 espacios para el orden pre-calculado
+                preCalculatedOrder = Array(12).fill(null);
+                
+                // Identificamos qué grupos ya tienen anfitriones
+                const hostGroupIndices = hostAssignments.map(h => h.groupIndex);
+                
+                let remainingTeamIndex = 0;
+                // Llenamos los huecos vacíos con los equipos mezclados
+                for (let i = 0; i < 12; i++) {
+                    if (!hostGroupIndices.includes(i)) {
+                        preCalculatedOrder[i] = shuffledRemaining[remainingTeamIndex];
+                        remainingTeamIndex++;
+                    }
+                    // Si el índice ES un grupo anfitrión, preCalculatedOrder[i] se queda en null
+                }
+
+            } else {
+                // Lógica normal para Bombos 2, 3 y 4 (Pre-cálculo con restricciones)
+                preCalculatedOrder = preparePotBatch(rawTeams);
+            }
             
-            // Para la UI, mostramos las bolillas "sin abrir"
-            // Usamos una copia para ir quitando visualmente
-            currentTeams = [...preCalculatedOrder]; 
-            currentGroupTarget = 0;
+            // Las bolillas visibles son solo los equipos que se van a sortear (9 en bombo 1, 12 en el resto)
+            currentTeams = preCalculatedOrder.filter(team => team !== null);
+            
+            // Reseteamos el target al primer grupo
+            currentGroupTarget = 0; 
 
             document.getElementById('action-text').innerHTML = `SORTEANDO <span class="text-[#004a94]">BOMBO ${potIndex + 1}</span>`;
             document.getElementById('status-badge').innerText = `BOMBO ${potIndex + 1}/4`;
@@ -491,7 +470,6 @@
                 const b = document.createElement('div');
                 b.className = "draw-ball group";
                 b.innerHTML = `<span class="text-[9px] font-bold text-gray-400 tracking-tighter group-hover:text-[#004a94]">FIFA</span>`;
-                // Importante: No pasamos el índice, solo el elemento visual
                 b.onclick = (e) => pickNextPrecalculated(e.currentTarget);
                 container.appendChild(b);
             }
@@ -500,23 +478,27 @@
         function pickNextPrecalculated(ballElement) {
             if (isAnimating || ballElement.classList.contains('popped')) return;
             
+            // Saltar grupos que ya están llenos (para el Bombo 1)
+            while (preCalculatedOrder[currentGroupTarget] === null && currentGroupTarget < 12) {
+                currentGroupTarget++;
+            }
+            
+            if (currentGroupTarget >= 12) return;
+
             isAnimating = true;            
             ballElement.classList.add('popped');
 
-            // Tomenos el siguiente equipo de la lista YA ORDENADA y VALIDADA
-            // currentGroupTarget nos dice en qué grupo toca (0=A, 1=B...)
-            // Como preCalculatedOrder ya está alineado con los grupos (índice 0 va al A, índice 1 al B...)
-            // solo necesitamos tomar el equipo correspondiente al índice actual.
-            
             const selectedTeam = preCalculatedOrder[currentGroupTarget];
 
             showReveal(selectedTeam, currentGroupTarget, () => {
-                placeInGroup(selectedTeam, currentGroupTarget, currentPotIndex);
+                placeInGroup(selectedTeam, currentGroupTarget, currentPotIndex, true); // true = con animación
                 currentGroupTarget++;
                 isAnimating = false;
 
-                // Verificar si terminamos el bombo
-                if (currentGroupTarget >= 12) {
+                // Verificar si terminamos el bombo. 
+                let remainingSlots = preCalculatedOrder.slice(currentGroupTarget).filter(t => t !== null).length;
+                
+                if (remainingSlots === 0) {
                      setTimeout(() => startPot(currentPotIndex + 1), 1000);
                 }
             });
@@ -546,9 +528,11 @@
             }, 1200); 
         }
 
-        function placeInGroup(team, groupIdx, potIdx) {
-            // Guardar en estado lógico
-            groupsContent[groupIdx].push(team);
+        function placeInGroup(team, groupIdx, potIdx, animate = true) {
+            // Guardar en estado lógico si no estaba ya
+            if (!groupsContent[groupIdx][potIdx]) {
+                 groupsContent[groupIdx][potIdx] = team;
+            }
 
             // Actualizar UI
             const container = document.getElementById(`group-content-${groupIdx}`);
@@ -563,7 +547,11 @@
                     ${imgTag}
                     <span class="font-bold text-sm text-gray-900 truncate">${team.name}</span>
                 `;
-                target.className = "py-2 px-3 rounded bg-white border border-gray-300 flex items-center gap-3 slot-filled shadow-sm";
+                
+                let className = "py-2 px-3 rounded bg-white border border-gray-300 flex items-center gap-3 shadow-sm";
+                if (animate) className += " slot-filled"; 
+                
+                target.className = className;
             }
         }
 
