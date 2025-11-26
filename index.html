@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,15 +6,17 @@
     <title>Simulador del Sorteo - La Gaceta</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v48/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2" as="font" type="font/woff2" crossorigin>
     <style>
+        /* --- Variables CSS --- */
         :root {
             --brand-blue: #004a94;
             --brand-yellow: #fcd34d;
             --text-main: #111827;
             --bg-body: #f3f4f6;
+            --whatsapp-green: #25D366; /* Color oficial WhatsApp */
         }
 
+        /* --- Estilos Base --- */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: var(--bg-body);
@@ -28,11 +29,11 @@
             font-weight: 600;
         }
 
-        /* Scrollbar */
+        /* Scrollbar personalizado */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
 
-        /* --- Intro Screen --- */
+        /* --- Pantalla de Introducción --- */
         #intro-screen {
             position: fixed;
             inset: 0;
@@ -51,7 +52,7 @@
             pointer-events: none;
         }
 
-        /* --- Game Elements --- */
+        /* --- Elementos del Juego (Bolillas) --- */
         .draw-ball {
             width: 55px;
             height: 55px;
@@ -83,7 +84,7 @@
             100% { transform: scale(1.5); opacity: 0; }
         }
 
-        /* Overlay de Revelación */
+        /* --- Overlay de Revelación (Carta central) --- */
         #reveal-overlay {
             position: fixed;
             inset: 0;
@@ -112,7 +113,7 @@
             opacity: 1;
         }
 
-        /* Slot Animation */
+        /* --- Animaciones de los Slots (Casilleros) --- */
         .slot-filled {
             animation: flashSlot 0.5s;
             background-color: #ffffff; 
@@ -122,19 +123,27 @@
             100% { background-color: #ffffff; color: black; }
         }
 
-        /* --- Estilo para la caja de instrucciones --- */
+        /* --- Caja de Instrucciones (Footer) --- */
         .instruction-box {
-            background-color: #eff6ff; /* Azul muy claro (bg-blue-50) */
-            border: 1px solid #bfdbfe; /* Borde azul claro (border-blue-200) */
-            color: #1e3a8a; /* Texto azul oscuro (text-blue-900) */
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e3a8a;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             font-family: 'Roboto', sans-serif;
-            margin: 0 auto; /* Centrado horizontal */
-            padding: 12px 16px; /* Padding interno */
-            border-radius: 8px; /* Bordes redondeados */
+            margin: 0 auto;
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+
+        /* --- Estilos específicos para botones de compartir --- */
+        .btn-whatsapp {
+            background-color: var(--whatsapp-green);
+        }
+        .btn-whatsapp:hover {
+            background-color: #1da851;
         }
     </style>
 </head>
@@ -146,7 +155,6 @@
         </h1>
         <p class="text-xl md:text-2xl text-gray-700 mb-10 font-light max-w-2xl">
             Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.<br>
-           
         </p>
         <button onclick="startGame()" class="bg-[#004a94] text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800">
             Comenzar Sorteo
@@ -163,18 +171,9 @@
         <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3">
             <div>
                 <h2 class="text-3xl font-black text-gray-900">SORTEO MUNDIAL 2026</h2>
-                
             </div>
             <div id="status-badge" class="mt-2 md:mt-0 px-4 py-2 bg-white text-[#004a94] text-sm font-bold uppercase tracking-wider rounded shadow-sm border border-gray-300">
                 Esperando inicio
-            </div>
-        </div>
-
-        <div class="w-full flex justify-center my-6 px-4 z-10 relative">
-            <div class="w-full max-w-[728px] h-[90px] bg-gray-100 border border-gray-300 flex flex-col items-center justify-center text-gray-400 rounded overflow-hidden relative shadow-sm">
-            <span class="absolute top-0 right-0 bg-gray-200 text-[9px] px-2 py-0.5 text-gray-500 uppercase tracking-wider">Publicidad</span>
-            <span class="font-bold uppercase tracking-widest">Espacio Publicitario</span>
-            <span class="text-xs opacity-75">Leaderboard Estándar (728 x 90)</span>
             </div>
         </div>
 
@@ -188,7 +187,7 @@
         <div id="groups-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             </div>
 
-        <div class="h-56"></div> </main>
+        <div class="h-64"></div> </main>
 
     <footer class="fixed bottom-0 w-full z-30 bg-white border-t-2 border-gray-300 shadow-[0_-5px_25px_rgba(0,0,0,0.1)] pb-safe">
         <div class="container mx-auto px-4 py-3">
@@ -201,7 +200,7 @@
                         </svg>
                         <span>
                             <span class="font-bold uppercase">Cómo funciona:</span>
-                            Presioná las bolas FIFA ⚽ para sortear y revelar el siguiente país.
+                            Presioná las bolas FIFA ⚽ en la barra inferior para sortear y revelar el siguiente país.
                         </span>
                     </p>
                 </div>
@@ -212,8 +211,23 @@
                 
                 <div id="balls-container" class="flex flex-wrap justify-center gap-4 min-h-[60px]">
                     </div>
+                
+                <div id="share-buttons-container" class="hidden mt-5 flex flex-wrap justify-center gap-3">
+                    <a href="https://wa.me/?text=Ya%20jugu%C3%A9%20al%20Simulador%20del%20Sorteo%20del%20Mundial%202026%20realizado%20por%20LA%20GACETA.%20%C2%BFY%20vos%3F" target="_blank" rel="noopener noreferrer" class="btn-whatsapp text-white font-bold py-2 px-4 rounded shadow flex items-center gap-2 transition transform hover:scale-105 text-sm uppercase tracking-wider">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                        </svg>
+                        Compartir
+                    </a>
+                    <a href="mailto:?subject=Simulador%20Sorteo%20Mundial%202026&body=Ya%20jugu%C3%A9%20al%20Simulador%20del%20Sorteo%20del%20Mundial%202026%20realizado%20por%20LA%20GACETA.%20%C2%BFY%20vos%3F" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow flex items-center gap-2 transition transform hover:scale-105 text-sm uppercase tracking-wider">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/>
+                        </svg>
+                        Enviar
+                    </a>
+                </div>
 
-                <button id="reset-btn" onclick="resetDraw()" class="hidden mt-4 px-8 py-2 bg-[#004a94] text-white font-bold rounded shadow hover:bg-blue-900 transition uppercase tracking-widest text-sm">
+                <button id="reset-btn" onclick="resetDraw()" class="hidden mt-5 px-8 py-2 bg-[#004a94] text-white font-bold rounded shadow hover:bg-blue-900 transition uppercase tracking-widest text-sm border border-blue-800">
                     Reiniciar Sorteo
                 </button>
             </div>
@@ -241,10 +255,11 @@
             </div>
         </div>
     </div>
-    <script>
-        /* --- DATA CONFIGURADA CON TU LISTADO OFICIAL --- */
 
-        // Anfitriones con asignación fija de grupos.
+    <script>
+        /* --- DATA --- */
+
+        // Asignación específica de grupos para anfitriones.
         const hostAssignments = [
             { team: { name: "México", code: "mx", conf: "CONCACAF" }, groupIndex: 0 },        // Grupo A
             { team: { name: "Canadá", code: "ca", conf: "CONCACAF" }, groupIndex: 1 },        // Grupo B
@@ -267,39 +282,38 @@
                 ]
             },
             {
-                id: 2, // Bombo 2 (12 equipos)
+                id: 2, // Bombo 2
                 teams: [
-                    { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, { name: "Colombia", code: "co", conf: "CONMEBOL" },
-                    { name: "Croacia", code: "hr", conf: "UEFA" }, { name: "Suiza", code: "ch", conf: "UEFA" },
-                    { name: "Austria", code: "at", conf: "UEFA" }, { name: "Marruecos", code: "ma", conf: "CAF" },
-                    { name: "Senegal", code: "sn", conf: "CAF" }, { name: "Japón", code: "jp", conf: "AFC" },
-                    { name: "Irán", code: "ir", conf: "AFC" }, { name: "Corea del Sur", code: "kr", conf: "AFC" },
-                    { name: "Australia", code: "au", conf: "AFC" }, { name: "Ecuador", code: "ec", conf: "CONMEBOL" }
+                     { name: "Uruguay", code: "uy", conf: "CONMEBOL" }, { name: "Colombia", code: "co", conf: "CONMEBOL" },
+                     { name: "Croacia", code: "hr", conf: "UEFA" }, { name: "Suiza", code: "ch", conf: "UEFA" },
+                     { name: "Austria", code: "at", conf: "UEFA" }, { name: "Marruecos", code: "ma", conf: "CAF" },
+                     { name: "Senegal", code: "sn", conf: "CAF" }, { name: "Japón", code: "jp", conf: "AFC" },
+                     { name: "Irán", code: "ir", conf: "AFC" }, { name: "Corea del Sur", code: "kr", conf: "AFC" },
+                     { name: "Australia", code: "au", conf: "AFC" }, { name: "Ecuador", code: "ec", conf: "CONMEBOL" }
                 ]
             },
             {
-                id: 3, // Bombo 3 (12 equipos) - AJUSTADO: Sale Nigeria, entra Ghana
+                id: 3, // Bombo 3 (Sin Nigeria, con Ghana)
                 teams: [
-                    { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
-                    { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
-                    { name: "Egipto", code: "eg", conf: "CAF" }, { name: "Argelia", code: "dz", conf: "CAF" },
-                    // Nigeria eliminada
-                    { name: "Ghana", code: "gh", conf: "CAF" }, // Movido desde Bombo 4
-                    { name: "Costa de Marfil", code: "ci", conf: "CAF" },
-                    { name: "Cabo Verde", code: "cv", conf: "CAF" }, { name: "Qatar", code: "qa", conf: "AFC" },
-                    { name: "Arabia Saudita", code: "sa", conf: "AFC" }, { name: "Panamá", code: "pa", conf: "CONCACAF" }
+                     { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
+                     { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
+                     { name: "Egipto", code: "eg", conf: "CAF" }, { name: "Argelia", code: "dz", conf: "CAF" },
+                     { name: "Ghana", code: "gh", conf: "CAF" },
+                     { name: "Costa de Marfil", code: "ci", conf: "CAF" },
+                     { name: "Cabo Verde", code: "cv", conf: "CAF" }, { name: "Qatar", code: "qa", conf: "AFC" },
+                     { name: "Arabia Saudita", code: "sa", conf: "AFC" }, { name: "Panamá", code: "pa", conf: "CONCACAF" }
                 ]
             },
             {
-                id: 4, // Bombo 4 (12 equipos) - AJUSTADO: Agregado un Repechaje extra
+                id: 4, // Bombo 4 (Con Repechaje 6)
                 teams: [
-                    { name: "Uzbekistán", code: "uz", conf: "AFC" }, { name: "Jordania", code: "jo", conf: "AFC" },
-                    { name: "Sudáfrica", code: "za", conf: "CAF" }, // Ghana subió al bombo 3
-                    { name: "Nueva Zelanda", code: "nz", conf: "OFC" }, { name: "Haití", code: "ht", conf: "CONCACAF" },
-                    { name: "Curazao", code: "cw", conf: "CONCACAF" }, 
-                    { name: "Repechaje 1", code: "un", conf: "WLD" }, { name: "Repechaje 2", code: "un", conf: "WLD" }, 
-                    { name: "Repechaje 3", code: "un", conf: "WLD" }, { name: "Repechaje 4", code: "un", conf: "WLD" }, 
-                    { name: "Repechaje 5", code: "un", conf: "WLD" }, { name: "Repechaje 6", code: "un", conf: "WLD" } // Nuevo
+                     { name: "Uzbekistán", code: "uz", conf: "AFC" }, { name: "Jordania", code: "jo", conf: "AFC" },
+                     { name: "Sudáfrica", code: "za", conf: "CAF" },
+                     { name: "Nueva Zelanda", code: "nz", conf: "OFC" }, { name: "Haití", code: "ht", conf: "CONCACAF" },
+                     { name: "Curazao", code: "cw", conf: "CONCACAF" }, { name: "Repechaje 1", code: "un", conf: "WLD" },
+                     { name: "Repechaje 2", code: "un", conf: "WLD" }, { name: "Repechaje 3", code: "un", conf: "WLD" },
+                     { name: "Repechaje 4", code: "un", conf: "WLD" }, { name: "Repechaje 5", code: "un", conf: "WLD" },
+                     { name: "Repechaje 6", code: "un", conf: "WLD" }
                 ]
             }
         ];
@@ -504,7 +518,7 @@
                 let remainingSlots = preCalculatedOrder.slice(currentGroupTarget).filter(t => t !== null).length;
                 
                 if (remainingSlots === 0) {
-                    setTimeout(() => startPot(currentPotIndex + 1), 1000);
+                     setTimeout(() => startPot(currentPotIndex + 1), 1000);
                 }
             });
         }
@@ -536,7 +550,7 @@
         function placeInGroup(team, groupIdx, potIdx, animate = true) {
             // Guardar en estado lógico si no estaba ya
             if (!groupsContent[groupIdx][potIdx]) {
-                groupsContent[groupIdx][potIdx] = team;
+                 groupsContent[groupIdx][potIdx] = team;
             }
 
             // Actualizar UI
@@ -565,7 +579,12 @@
             document.getElementById('action-text').innerHTML = "<span class='text-green-700 text-lg font-black'>¡SORTEO FINALIZADO!</span>";
             document.getElementById('status-badge').innerText = "FINAL";
             document.getElementById('status-badge').className = "px-4 py-1 rounded bg-green-100 text-green-800 text-xs font-bold border border-green-300";
+            
+            // Mostrar botones finales
             document.getElementById('reset-btn').classList.remove('hidden');
+            // NUEVO: Mostrar botones de compartir
+            document.getElementById('share-buttons-container').classList.remove('hidden');
+
             launchConfetti();
         }
 
