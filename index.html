@@ -13,7 +13,7 @@
             --brand-yellow: #fcd34d;
             --text-main: #111827;
             --bg-body: #f3f4f6;
-            --whatsapp-green: #25D366; /* Color oficial WhatsApp */
+            --whatsapp-green: #25D366;
         }
 
         /* --- Estilos Base --- */
@@ -46,6 +46,7 @@
             text-align: center;
             padding: 20px;
             transition: opacity 0.5s ease-out;
+            overflow-y: auto; /* Permitir scroll si la pantalla es muy baja */
         }
         #intro-screen.hidden-screen {
             opacity: 0;
@@ -123,8 +124,8 @@
             100% { background-color: #ffffff; color: black; }
         }
 
-        /* --- Caja de Instrucciones (Footer) --- */
-        .instruction-box {
+        /* --- Caja de Instrucciones (Footer del juego) --- */
+        .instruction-box-footer {
             background-color: #eff6ff;
             border: 1px solid #bfdbfe;
             color: #1e3a8a;
@@ -149,27 +150,37 @@
 </head>
 <body class="min-h-screen flex flex-col relative">
 
-    <div id="intro-screen">
-        <h1 class="text-4xl md:text-6xl font-black text-[#004a94] mb-6 tracking-tight leading-tight max-w-4xl">
+    <div id="intro-screen" class="py-8">
+        <h1 class="text-3xl md:text-5xl font-black text-[#004a94] mb-4 tracking-tight leading-tight max-w-4xl">
             Simulá el sorteo del Mundial 2026
         </h1>
-        <p class="text-xl md:text-2xl text-gray-700 mb-10 font-light max-w-2xl">
+        <p class="text-lg md:text-xl text-gray-700 mb-6 font-light max-w-2xl">
             Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.<br>
+            
         </p>
-        <button onclick="startGame()" class="bg-[#004a94] text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800">
+
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-8 max-w-2xl text-left mx-4 shadow-sm">
+            <h3 class="text-[#004a94] font-bold mb-3 text-base md:text-lg uppercase tracking-wider border-b border-blue-200 pb-2">Instrucciones del Juego</h3>
+            <ul class="space-y-3 text-gray-800 text-sm md:text-[15px] leading-relaxed font-medium">
+                <li class="flex gap-2">
+                    <span class="text-blue-500 mt-0.5">👉</span>
+                    <span><span class="font-black text-gray-900">Inicio:</span> el simulador comienza automáticamente con los tres países anfitriones (México, Canadá y EE.UU.) ya ubicados en sus grupos como cabezas de serie; el bombo activo aparecerá resaltado.</span>
+                </li>
+                <li class="flex gap-2">
+                    <span class="text-blue-500 mt-0.5">👉</span>
+                    <span><span class="font-black text-gray-900">Misión:</span> hacé clic (o tocá) en cualquiera de las bolillas "FIFA" que aparecen en la barra inferior de la pantalla para sortear una selección.</span>
+                </li>
+                <li class="flex gap-2">
+                    <span class="text-blue-500 mt-0.5">👉</span>
+                    <span><span class="font-black text-gray-900">Asignación:</span> el país sorteado se mostrará en pantalla y el sistema lo ubicará automáticamente en un grupo válido según las reglas oficiales. Repetí el proceso hasta completar los 4 bombos.</span>
+                </li>
+            </ul>
+        </div>
+        <button onclick="startGame()" class="bg-[#004a94] text-white text-lg md:text-xl font-bold py-3 px-10 md:py-4 md:px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800 animate-bounce-slow">
             Comenzar Sorteo
         </button>
-        <div class="mt-12 opacity-60">
-            <span class="text-xl md:text-2xl text-gray-700 mb-10 font-light max-w-2xl">
-                <p>Instrucciones del Juego</p>
-                    <ul>
-                        <li>Inicio: el simulador comienza automáticamente con los tres países anfitriones (México, Canadá y EE.UU.) ya ubicados en sus grupos como cabezas de serie; el bombo activo aparecerá resaltado.</li>
-                        <li>Misión: hacé clic (o tocá) en cualquiera de las bolillas "FIFA" que aparecen en la barra inferior de la pantalla para sortear una selección.</li>
-                        <li>Asignación: el país sorteado se mostrará en pantalla y el sistema lo ubicará automáticamente en un grupo válido según las reglas oficiales. Repetí el proceso hasta completar los 4 bombos.</li>
-                    </ul>
-            </span>
+        
         </div>
-    </div>
 
     <header class="bg-white border-b border-gray-300 sticky top-0 z-40 shadow-sm h-4"></header>
 
@@ -178,6 +189,7 @@
         <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3">
             <div>
                 <h2 class="text-3xl font-black text-gray-900">SORTEO MUNDIAL 2026</h2>
+               
             </div>
             <div id="status-badge" class="mt-2 md:mt-0 px-4 py-2 bg-white text-[#004a94] text-sm font-bold uppercase tracking-wider rounded shadow-sm border border-gray-300">
                 Esperando inicio
@@ -200,14 +212,14 @@
         <div class="container mx-auto px-4 py-3">
             
             <div class="w-full flex justify-center mb-2">
-                <div class="instruction-box w-full md:w-auto shadow-sm mx-2">
+                <div class="instruction-box-footer w-full md:w-auto shadow-sm mx-2">
                     <p class="text-sm md:text-base font-medium flex items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-500 hidden md:block flex-shrink-0">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                         </svg>
                         <span>
                             <span class="font-bold uppercase">Cómo funciona:</span>
-                            Presioná las bolas FIFA ⚽ en la barra inferior para sortear y revelar el siguiente país.
+                            Presioná las bolas FIFA ⚽ abajo para sortear un país.
                         </span>
                     </p>
                 </div>
@@ -227,7 +239,7 @@
                         Compartir
                     </a>
                     <a href="mailto:?subject=Simulador%20Sorteo%20Mundial%202026&body=Ya%20jugu%C3%A9%20al%20Simulador%20del%20Sorteo%20del%20Mundial%202026%20realizado%20por%20LA%20GACETA.%20%C2%BFY%20vos%3F" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow flex items-center gap-2 transition transform hover:scale-105 text-sm uppercase tracking-wider">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                           <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/>
                         </svg>
                         Enviar
