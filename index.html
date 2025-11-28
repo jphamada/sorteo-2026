@@ -53,8 +53,51 @@
             pointer-events: none;
         }
 
-        /* --- Elementos del Juego --- */
-        /* Nota: Se eliminaron los estilos de .draw-ball ya que no se usan */
+        /* --- Elementos del Juego (Bolillas) --- */
+        .draw-ball {
+            width: 60px; /* Un poco más grandes para el texto */
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #d1d5db);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.15), 0 4px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.2s;
+            position: relative;
+            border: 1px solid #9ca3af;
+            z-index: 10;
+            color: #333;
+            flex-direction: column; /* Para apilar texto */
+            line-height: 1;
+        }        
+        .draw-ball:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: var(--brand-blue);
+            box-shadow: 0 10px 15px rgba(0, 74, 148, 0.3);
+        }
+        .draw-ball.popped {
+            animation: popDisappear 0.3s forwards;
+            pointer-events: none;
+        }
+        .draw-ball-label {
+            font-size: 8px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+        .draw-ball-group {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--brand-blue);
+        }
+
+        @keyframes popDisappear {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
 
         /* --- Animaciones de los Slots (Casilleros) --- */
         .slot-filled {
@@ -98,7 +141,7 @@
             Simulá el sorteo del Mundial 2026
         </h1>
         <p class="text-lg md:text-xl text-gray-700 mb-8 font-light max-w-2xl">
-            Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.
+            Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo, aplicando las reglas oficiales de la FIFA.
         </p>
 
         <button onclick="startGame()" class="bg-[#004a94] text-white text-lg md:text-xl font-bold py-3 px-10 md:py-4 md:px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800 animate-bounce-slow mb-8">
@@ -106,19 +149,19 @@
         </button>
 
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-8 max-w-2xl text-left mx-4 shadow-sm">
-            <h3 class="text-[#004a94] font-bold mb-3 text-base md:text-lg uppercase tracking-wider border-b border-blue-200 pb-2">Mecánica de Sorteo</h3>
+            <h3 class="text-[#004a94] font-bold mb-3 text-base md:text-lg uppercase tracking-wider border-b border-blue-200 pb-2">Nueva Mecánica de Sorteo</h3>
             <ul class="space-y-3 text-gray-800 text-sm md:text-[15px] leading-relaxed font-medium">
                 <li class="flex gap-2 items-start">
                     <span class="text-blue-500 mt-0.5 text-xl">👉</span>
-                    <span><span class="font-black text-gray-900">Por Grupos:</span> El sorteo se realiza completando un grupo a la vez, del A al L.</span>
+                    <span><span class="font-black text-gray-900">Por Grupos:</span> A diferencia del sorteo real, aquí sortearás un grupo completo a la vez.</span>
                 </li>
                 <li class="flex gap-2 items-start">
                     <span class="text-blue-500 mt-0.5 text-xl">👉</span>
-                    <span><span class="font-black text-gray-900">Misión:</span> Presioná el botón azul en la barra inferior que indica qué grupo toca sortear.</span>
+                    <span><span class="font-black text-gray-900">Misión:</span> Hacé clic en la bolilla de un grupo (ej. "Grupo A") en la barra inferior.</span>
                 </li>
                 <li class="flex gap-2 items-start">
                     <span class="text-blue-500 mt-0.5 text-xl">👉</span>
-                    <span><span class="font-black text-gray-900">Resultado:</span> Al hacer clic, el sistema revelará los 4 equipos del grupo.</span>
+                    <span><span class="font-black text-gray-900">Resultado Instantáneo:</span> El sistema sorteará y completará automáticamente los 4 equipos de ese grupo, respetando bombos y reglas de confederación. ¡Repetí hasta completar los 12 grupos!</span>
                 </li>
             </ul>
         </div>
@@ -153,29 +196,38 @@
     <footer class="fixed bottom-0 w-full z-30 bg-white border-t-2 border-gray-300 shadow-[0_-5px_25px_rgba(0,0,0,0.1)] pb-safe">
         <div class="container mx-auto px-4 py-3">
             
-            
+            <div class="w-full flex justify-center mb-2">
+                <div class="instruction-box-footer w-full md:w-auto shadow-sm mx-2">
+                    <p class="text-sm md:text-base font-medium flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-500 hidden md:block flex-shrink-0">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                        </svg>
+                        <span>
+                            <span class="font-bold uppercase">Cómo funciona:</span>
+                            Tocá una bolilla de GRUPO para sortearlo completo.
+                        </span>
+                    </p>
+                </div>
+            </div>
 
             <div class="text-center mt-1">
-                <h2 id="action-text" class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-widest animate-pulse">Listo para comenzar</h2>
+                <h2 id="action-text" class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest animate-pulse">Seleccioná un grupo</h2>
                 
-                <div id="sequential-btn-container" class="flex justify-center min-h-[60px] items-center pb-2">
-                    <button id="sequential-draw-btn" onclick="handleSequentialDraw()" class="bg-[#004a94] text-white text-xl md:text-2xl font-black py-4 px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-lg tracking-widest uppercase border-4 border-blue-100 flex items-center gap-3 animate-bounce-slow">
-                        <span>⚽</span> <span id="btn-text">Sortear Grupo A</span>
-                    </button>
-                </div>
+                <div id="balls-container" class="flex flex-wrap justify-center gap-3 min-h-[60px]">
+                    </div>
                 
-                <div id="share-buttons-container" class="hidden mt-3 flex flex-wrap justify-center gap-3 pb-2">
-                    <a href="https://wa.me/?text=Ya%20jugu%C3%A9%20al%20Simulador%20del%20Sorteo%20del%20Mundial%202026%20realizado%20por%20LA%20GACETA.%20%C2%BFY%20vos%3F%20Jugalo%20ac%C3%A1%3A%20https%3A%2F%2Fwww.lagaceta.com.ar%2Fsorteo-mundial-2026" target="_blank" rel="noopener noreferrer" class="btn-whatsapp text-white font-bold py-2 px-6 rounded-full shadow flex items-center gap-2 transition transform hover:scale-105 text-sm uppercase tracking-wider">
+                <div id="share-buttons-container" class="hidden mt-5 flex flex-wrap justify-center gap-3">
+                    <a href="https://wa.me/?text=Ya%20jugu%C3%A9%20al%20Simulador%20del%20Sorteo%20del%20Mundial%202026%20realizado%20por%20LA%20GACETA.%20%C2%BFY%20vos%3F%20Jugalo%20ac%C3%A1%3A%20https%3A%2F%2Fwww.lagaceta.com.ar%2Fsorteo-mundial-2026" target="_blank" rel="noopener noreferrer" class="btn-whatsapp text-white font-bold py-2 px-4 rounded shadow flex items-center gap-2 transition transform hover:scale-105 text-sm uppercase tracking-wider">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
                         Compartir
                     </a>
-                    <a href="mailto:?subject=Simulador%20Sorteo%20Mundial%202026&body=Ya%20jugu%C3%A9%20al%20Simulador%20del%20Sorteo%20del%20Mundial%202026%20realizado%20por%20LA%20GACETA.%20%C2%BFY%20vos%3F%0A%0AJugalo%20ac%C3%A1%3A%20https://www.lagaceta.com.ar/sorteo-mundial-2026" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-full shadow flex items-center gap-2 transition transform hover:scale-105 text-sm uppercase tracking-wider">
+                    <a href="mailto:?subject=Simulador%20Sorteo%20Mundial%202026&body=Ya%20jugu%C3%A9%20al%20Simulador%20del%20Sorteo%20del%20Mundial%202026%20realizado%20por%20LA%20GACETA.%20%C2%BFY%20vos%3F%0A%0AJugalo%20ac%C3%A1%3A%20https://www.lagaceta.com.ar/sorteo-mundial-2026" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow flex items-center gap-2 transition transform hover:scale-105 text-sm uppercase tracking-wider">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/></svg>
                         Enviar
                     </a>
                 </div>
 
-                <button id="reset-btn" onclick="resetDraw()" class="hidden mt-4 px-8 py-2 bg-[#004a94] text-white font-bold rounded shadow hover:bg-blue-900 transition uppercase tracking-widest text-sm border border-blue-800">
+                <button id="reset-btn" onclick="resetDraw()" class="hidden mt-5 px-8 py-2 bg-[#004a94] text-white font-bold rounded shadow hover:bg-blue-900 transition uppercase tracking-widest text-sm border border-blue-800">
                     Reiniciar Sorteo
                 </button>
             </div>
@@ -199,9 +251,9 @@
 
         const groupNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
         
-        // Estado lógico global y control de secuencia
+        // Estado lógico global de los grupos (se llenará al inicio)
         let groupsContent = Array(12).fill(null).map(() => Array(4).fill(null));
-        let nextGroupToIndex = 0; // Índice del próximo grupo a sortear (0 = A, 1 = B, etc.)
+        let groupsDrawnCount = 0;
         let isAnimating = false;
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -211,12 +263,11 @@
         function startGame() {
             const intro = document.getElementById('intro-screen');
             intro.classList.add('hidden-screen');
-            
             // Pre-calcular todo el sorteo de forma válida al inicio
             preCalculateEntireDraw();
-            
             document.getElementById('status-badge').innerText = "EN CURSO";
-            document.getElementById('action-text').innerText = "Presioná el botón para sortear el siguiente grupo";
+            // Renderizar las bolillas de los grupos
+            renderGroupBalls();
         }
 
         function initUI() {
@@ -300,6 +351,8 @@
 
              if (!success) {
                 console.error("Error crítico: No se pudo generar un sorteo válido. Reiniciando...");
+                // En un caso real extremo, se podría reiniciar todo el proceso.
+                // Por ahora, forzamos una recarga para evitar estado inconsistente.
                 location.reload();
             }
         }
@@ -311,45 +364,44 @@
         }
         // ---------------------------------------------------------
 
-        // --- NUEVA LÓGICA DE INTERACCIÓN SECUENCIAL ---
-        function handleSequentialDraw() {
-            // Si ya terminamos o está animando, no hacer nada
-            if (isAnimating || nextGroupToIndex >= 12) return;
 
+        // --- RENDERIZADO DE BOLILLAS DE GRUPO ---
+        function renderGroupBalls() {
+            const container = document.getElementById('balls-container');
+            container.innerHTML = '';
+            groupNames.forEach((name, index) => {
+                const b = document.createElement('div');
+                b.className = "draw-ball group";
+                b.innerHTML = `
+                    <span class="draw-ball-label">GRUPO</span>
+                    <span class="draw-ball-group">${name}</span>
+                `;
+                b.onclick = (e) => revealGroup(index, e.currentTarget);
+                container.appendChild(b);
+            });
+        }
+
+        // --- LÓGICA DE REVELACIÓN DEL GRUPO ---
+        function revealGroup(groupIndex, ballElement) {
+            if (isAnimating || ballElement.classList.contains('popped')) return;
             isAnimating = true;
-            const groupIndexToDraw = nextGroupToIndex;
-
-            // Deshabilitar visualmente el botón mientras anima
-            const btn = document.getElementById('sequential-draw-btn');
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            // Iniciar secuencia de revelado
+            ballElement.classList.add('popped');
+            
+            // Secuencia de animación para revelar los 4 equipos
             let slotIndex = 0;
             const revealNextSlot = () => {
                 if (slotIndex < 4) {
-                    const team = groupsContent[groupIndexToDraw][slotIndex];
-                    placeInGroupAnimated(team, groupIndexToDraw, slotIndex);
+                    const team = groupsContent[groupIndex][slotIndex];
+                    placeInGroupAnimated(team, groupIndex, slotIndex);
                     slotIndex++;
-                    // Velocidad de la animación entre equipos
-                    setTimeout(revealNextSlot, 400); 
+                    setTimeout(revealNextSlot, 400); // Delay entre cada equipo
                 } else {
-                    // Grupo terminado
                     isAnimating = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    nextGroupToIndex++;
-                    updateDrawButtonText();
+                    groupsDrawnCount++;
                     checkFinish();
                 }
             };
-            // Iniciar el primer slot
             revealNextSlot();
-        }
-
-        function updateDrawButtonText() {
-            const btnText = document.getElementById('btn-text');
-            if (nextGroupToIndex < 12) {
-                btnText.innerText = `Sortear Grupo ${groupNames[nextGroupToIndex]}`;
-            }
         }
 
         function placeInGroupAnimated(team, groupIdx, potIdx) {
@@ -367,7 +419,7 @@
                 `;
                 target.classList.add("slot-filled", "shadow-sm", "bg-white");
                 target.classList.remove("bg-gray-50");
-                // Eliminar placeholders
+                // Eliminar placeholders si existen
                 const placeholderFlag = target.querySelector('.placeholder-flag');
                 if(placeholderFlag) placeholderFlag.remove();
                 const placeholderText = target.querySelector('.placeholder-text');
@@ -376,15 +428,13 @@
         }
 
         function checkFinish() {
-            if (nextGroupToIndex === 12) {
+            if (groupsDrawnCount === 12) {
                 finishDraw();
             }
         }
 
         function finishDraw() {
-            // Ocultar el botón de sorteo
-            document.getElementById('sequential-btn-container').classList.add('hidden');
-            
+            document.getElementById('balls-container').innerHTML = '';
             document.getElementById('action-text').innerHTML = "<span class='text-green-700 text-lg font-black'>¡SORTEO FINALIZADO!</span>";
             document.getElementById('status-badge').innerText = "FINAL";
             document.getElementById('status-badge').className = "px-4 py-1 rounded bg-green-100 text-green-800 text-xs font-bold border border-green-300";
@@ -400,6 +450,7 @@
         }
 
         function launchConfetti() {
+            // (Misma función de confeti anterior)
              const colors = ['#004a94', '#fcd34d', '#ffffff', '#ef4444'];
             for(let i=0; i<100; i++) {
                 const c = document.createElement('div');
