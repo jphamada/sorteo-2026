@@ -46,7 +46,7 @@
             text-align: center;
             padding: 20px;
             transition: opacity 0.5s ease-out;
-            overflow-y: auto; /* Permitir scroll si la pantalla es muy baja */
+            overflow-y: auto;
         }
         #intro-screen.hidden-screen {
             opacity: 0;
@@ -156,47 +156,58 @@
         </h1>
         <p class="text-lg md:text-xl text-gray-700 mb-6 font-light max-w-2xl">
             Mirá cómo podrían quedar armados los grupos de la primera fase con nuestro simulador interactivo.<br>
-            
         </p>
+
+        <button onclick="startGame()" class="bg-[#004a94] text-white text-lg md:text-xl font-bold py-3 px-10 md:py-4 md:px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800 animate-bounce-slow">
+            Comenzar Sorteo
+        </button>
+        <br>
 
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-8 max-w-2xl text-left mx-4 shadow-sm">
             <h3 class="text-[#004a94] font-bold mb-3 text-base md:text-lg uppercase tracking-wider border-b border-blue-200 pb-2">Instrucciones del Juego</h3>
             <ul class="space-y-3 text-gray-800 text-sm md:text-[15px] leading-relaxed font-medium">
                 <li class="flex gap-2">
                     <span class="text-blue-500 mt-0.5">👉</span>
-                    <span><span class="font-black text-gray-900">Inicio:</span> el simulador comienza automáticamente con los tres países anfitriones (México, Canadá y EE.UU.) ya ubicados en sus grupos como cabezas de serie; el bombo activo aparecerá resaltado.</span>
+                    <span><span class="font-black text-gray-900">Inicio:</span> el simulador comienza con los países anfitriones ya ubicados en sus grupos.</span>
                 </li>
                 <li class="flex gap-2">
                     <span class="text-blue-500 mt-0.5">👉</span>
-                    <span><span class="font-black text-gray-900">Misión:</span> hacé clic (o tocá) en cualquiera de las bolillas "FIFA" que aparecen en la barra inferior de la pantalla para sortear una selección.</span>
+                    <span><span class="font-black text-gray-900">Misión:</span> hacé clic (o tocá) en las bolillas "FIFA" para sortear una selección.</span>
                 </li>
                 <li class="flex gap-2">
                     <span class="text-blue-500 mt-0.5">👉</span>
-                    <span><span class="font-black text-gray-900">Asignación:</span> el país sorteado se mostrará en pantalla y el sistema lo ubicará automáticamente en un grupo válido según las reglas oficiales. Repetí el proceso hasta completar los 4 bombos.</span>
+                    <span><span class="font-black text-gray-900">Asignación:</span> el sistema ubicará al país en un grupo según las reglas oficiales. Repetí el proceso.</span>
                 </li>
             </ul>
         </div>
+
         <button onclick="startGame()" class="bg-[#004a94] text-white text-lg md:text-xl font-bold py-3 px-10 md:py-4 md:px-12 rounded-full hover:bg-[#003870] transition transform hover:scale-105 shadow-xl tracking-widest uppercase border-2 border-blue-800 animate-bounce-slow">
             Comenzar Sorteo
         </button>
-        
-        </div>
+    </div>
 
     <header class="bg-white border-b border-gray-300 sticky top-0 z-40 shadow-sm h-4"></header>
 
-    <main class="flex-grow container mx-auto p-4 md:p-8 space-y-8">        
+    <main class="flex-grow container mx-auto p-4 md:p-8">        
         
-        <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3">
+        <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#004a94] pb-3 mb-6">
             <div>
                 <h2 class="text-3xl font-black text-gray-900">SORTEO MUNDIAL 2026</h2>
-               
             </div>
             <div id="status-badge" class="mt-2 md:mt-0 px-4 py-2 bg-white text-[#004a94] text-sm font-bold uppercase tracking-wider rounded shadow-sm border border-gray-300">
                 Esperando inicio
             </div>
         </div>
 
-        <section class="grid grid-cols-4 gap-2 md:gap-4">
+        <div class="w-full flex justify-center my-6 z-10 relative px-4">
+            <a href="https://www.sporting.com.ar/" target="_blank" rel="noopener noreferrer" class="block w-full max-w-[728px] mx-auto shadow-sm rounded overflow-hidden hover:opacity-95 transition-opacity">
+                <picture>
+                    <source media="(min-width: 768px)" srcset="https://img.lagaceta.com.ar/publicidad/SPGBlackFriday-Banner728x90.gif">
+                    <img src="https://img.lagaceta.com.ar/publicidad/SPGBlackFriday-Banner320x100.gif" alt="Publicidad Sporting" class="w-full h-auto mx-auto">
+                </picture>
+            </a>
+        </div>
+        <section class="grid grid-cols-4 gap-2 md:gap-4 mb-8">
             <div id="pot-indicator-0" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 1</div>
             <div id="pot-indicator-1" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 2</div>
             <div id="pot-indicator-2" class="p-2 rounded text-center text-xs font-bold transition-all border bg-gray-100 text-gray-400">Bombo 3</div>
@@ -312,7 +323,7 @@
                 ]
             },
             {
-                id: 3, // Bombo 3 (Sin Nigeria, con Ghana)
+                id: 3, // Bombo 3 
                 teams: [
                      { name: "Paraguay", code: "py", conf: "CONMEBOL" }, { name: "Noruega", code: "no", conf: "UEFA" },
                      { name: "Escocia", code: "gb-sct", conf: "UEFA" }, { name: "Túnez", code: "tn", conf: "CAF" },
@@ -601,7 +612,7 @@
             
             // Mostrar botones finales
             document.getElementById('reset-btn').classList.remove('hidden');
-            // NUEVO: Mostrar botones de compartir
+            // Mostrar botones de compartir
             document.getElementById('share-buttons-container').classList.remove('hidden');
 
             launchConfetti();
